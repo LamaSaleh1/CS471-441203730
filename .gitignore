@@ -23,4 +23,5 @@ venv.bak/
 *.DS_Store
 **/__pycache__
 **/.DS_Store
-.historydb.sqlite3 
+.history
+db.sqlite3
