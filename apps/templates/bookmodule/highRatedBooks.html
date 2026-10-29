@@ -1,0 +1,25 @@
+{% extends "layouts/base.html" %}
+{% block title %} Publisher High Rated Books {% endblock title %}
+{% block content %}
+<h1>Publishers - High Rated Books Count</h1>
+<table border="1" cellpadding="8">
+    <tr>
+        <th>Publisher Name</th>
+        <th>Location</th>
+        <th>Highly Rated Books Count</th>
+        <th>Total Stock Quantity</th>
+    </tr>
+    {% for publisher in publishers %}
+    <tr>
+        <td>{{ publisher.name }}</td>
+        <td>{{ publisher.location }}</td>
+        <td>{{ publisher.high_rated_count }}</td>
+        <td>{% if publisher.total_quantity %}{{ publisher.total_quantity }}{% else %}0{% endif %}</td>
+    </tr>
+    {% empty %}
+    <tr>
+        <td colspan="4">No publishers found in the database.</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock content %}

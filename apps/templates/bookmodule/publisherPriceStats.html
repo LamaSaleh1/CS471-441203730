@@ -1,0 +1,27 @@
+{% extends "layouts/base.html" %}
+{% block title %} Publisher Price Stats {% endblock title %}
+{% block content %}
+<h1>Publishers - Book Price Statistics</h1>
+<table border="1" cellpadding="8">
+    <tr>
+        <th>Publisher Name</th>
+        <th>Location</th>
+        <th>Average Price</th>
+        <th>Minimum Price</th>
+        <th>Maximum Price</th>
+    </tr>
+    {% for publisher in publishers %}
+    <tr>
+        <td>{{ publisher.name }}</td>
+        <td>{{ publisher.location }}</td>
+        <td>{% if publisher.avg_price %}{{ publisher.avg_price|floatformat:2 }}{% else %}-{% endif %}</td>
+        <td>{% if publisher.min_price %}{{ publisher.min_price|floatformat:2 }}{% else %}-{% endif %}</td>
+        <td>{% if publisher.max_price %}{{ publisher.max_price|floatformat:2 }}{% else %}-{% endif %}</td>
+    </tr>
+    {% empty %}
+    <tr>
+        <td colspan="5">No publishers found in the database.</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock content %}

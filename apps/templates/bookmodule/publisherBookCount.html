@@ -1,0 +1,23 @@
+{% extends "layouts/base.html" %}
+{% block title %} Publisher Book Count {% endblock title %}
+{% block content %}
+<h1>Publishers - Number of Books (Price &gt; 50, Quantity 1 to 4)</h1>
+<table border="1" cellpadding="8">
+    <tr>
+        <th>Publisher Name</th>
+        <th>Location</th>
+        <th>Number of Books</th>
+    </tr>
+    {% for publisher in publishers %}
+    <tr>
+        <td>{{ publisher.name }}</td>
+        <td>{{ publisher.location }}</td>
+        <td>{{ publisher.book_count }}</td>
+    </tr>
+    {% empty %}
+    <tr>
+        <td colspan="3">No publishers found in the database.</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock content %}
