@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import Book
+from .models import Book, Address, Student
+from django.db.models import Q, Count, Sum, Avg, Max, Min
 
 def index(request):
     return render(request, "bookmodule/index.html")
@@ -29,14 +30,14 @@ def listing_view(request):
 def tables_view(request):
     return render(request, 'bookmodule/tables.html')
 
-def __getBooksList():  # Lab 6
+def __getBooksList():  
     book1 = {'id': 12344321, 'title': 'Continuous Delivery', 'author': 'J.Humble and D. Farley'}
     book2 = {'id': 56788765, 'title': 'Reversing: Secrets of Reverse Engineering', 'author': 'E. Eilam'}
     book3 = {'id': 43211234, 'title': 'The Hundred-Page Machine Learning Book', 'author': 'Andriy Burkov'}
     return [book1, book2, book3]
 
 
-def search_view(request):  # Lab 6
+def search_view(request):  
     if request.method == "POST":
         keyword = request.POST.get('keyword')
         string = keyword.lower() if keyword else ''
@@ -68,3 +69,33 @@ def complex_query(request):
         return render(request, 'bookmodule/bookList.html', {'books': mybooks})
     else:
         return render(request, 'bookmodule/index.html')
+
+def lab8_task1(request):  
+    books = Book.objects.filter(Q(price__lte=80))
+    return render(request, 'bookmodule/bookList.html', {'books': books})
+
+def lab8_task2(request):  
+    books = Book.objects.filter(Q(edition__gt=3) & (Q(title__icontains='qu') | Q(author__icontains='qu')))
+    return render(request, 'bookmodule/bookList.html', {'books': books})
+
+def lab8_task3(request):  
+    books = Book.objects.filter(~Q(edition__gt=3) & (~Q(title__icontains='qu') | ~Q(author__icontains='qu')))
+    return render(request, 'bookmodule/bookList.html', {'books': books})
+
+def lab8_task4(request):  
+    books = Book.objects.all().order_by('title')
+    return render(request, 'bookmodule/bookList.html', {'books': books})
+
+def lab8_task5(request):  
+    aggregations = Book.objects.aggregate(
+        total_books=Count('id'),
+        total_price=Sum('price'),
+        average_price=Avg('price'),
+        max_price=Max('price'),
+        min_price=Min('price')
+    )
+    return render(request, 'bookmodule/bookStats.html', {'aggregations': aggregations})
+
+def student_city_count(request):  
+    cities = Address.objects.annotate(student_count=Count('student'))
+    return render(request, 'bookmodule/studentCityCount.html', {'cities': cities})
